@@ -6,25 +6,26 @@ import matplotlib as plt
 from plt_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from matplotlib.widgets import CheckButtons
+import math
 
 go=False
-inputX=raw_input("Write the function for X: ")
-inputY=raw_input("Write the function for Y: ")
-inputZ=raw_input("Write the function for Z: ")
+inputX = input("Write the function for X: ")
+inputY = input("Write the function for Y: ")
+inputZ = input("Write the function for Z: ")
 
 if len(inputX)>0 and len(inputY)>0 and len(inputZ)>0:
   go=True
 
-if go==True:
+if go == True:
   plt.rcParams['legend.fontsize'] = 10
   fig = plt.figure()
   ax = fig.gca(projection='3d')
 
-  t = linspace(-4 * pi, 4 * pi, 200)
+  t = numpy.linspace(-4 * math.pi, 4 * math.pi, 200)
 
   z = t
-  x = sin(t)
-  y = cos(t)
+  x = math.sin(t)
+  y = math.cos(t)
 
   ax.plot(x, y, z, label='Test')
 
@@ -77,8 +78,7 @@ def BNF():
         expr = Forward()
         atom = (Optional("-") + ( pi | e | t | fnumber | ident + lpar + expr + rpar ).setParseAction( pushFirst ) | ( lpar + expr.suppress() + rpar )).setParseAction(pushUMinus) 
 
-        # by defining exponentiation as "atom [ ^ factor ]..." instead of "atom [ ^ atom ]...", we get right-to-left exponents, instead of left-to-righ
-        # that is, 2^3^2 = 2^(3^2), not (2^3)^2.
+     
         factor = Forward()
         factor << atom + ZeroOrMore( ( expop + factor ).setParseAction( pushFirst ) )
 
@@ -87,16 +87,16 @@ def BNF():
         bnf = expr
     return bnf
 
-# map operator symbols to corresponding arithmetic operations
+
 epsilon = 1e-12
 opn = { "+" : operator.add,
         "-" : operator.sub,
         "*" : operator.mul,
         "/" : operator.truediv,
         "^" : operator.pow }
-fn  = { "sin" : sin,
-        "cos" : cos,
-        "tan" : tan,
+fn  = { "sin" : math.sin,
+        "cos" : math.cos,
+        "tan" : math.tan,
         "abs" : abs,
         "trunc" : lambda a: int(a),
         "round" : round,
@@ -115,7 +115,7 @@ def evaluateStack( s ):
     elif op == "E":
         return math.e  # 2.718281828
     elif op == "T":
-        return linspace(-4 * pi, 4 * pi, 200)
+        return numpy.linspace(-4 * math.pi, 4 * math.pi, 200)
     elif op in fn:
         return fn[op]( evaluateStack( s ) )
     elif op[0].isalpha():
@@ -130,4 +130,4 @@ def compute(s):
     val = evaluateStack( exprStack[:] )
     return val
 
-fun=raw_input("Please input a function to be evaluated: ")
+fun = input("Please input a function to be evaluated: ")
