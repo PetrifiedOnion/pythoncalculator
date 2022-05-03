@@ -2,10 +2,12 @@ from re import template
 from flask import Flask, render_template, request, flash
 from matplotlib import pyplot as plt
 import uuid
+import math as m
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "static"
 
+@app.route('/')
 @app.route("/calculator")
 def index():
     return render_template("index.html")
@@ -15,6 +17,7 @@ def make_plot():
 
     x_values = [1, 2, 3, 4]
     y_values = [5, 4, 6, 2]
+# parse(user_input)
 
     plt.plot(x_values, y_values)
     filename = str(uuid.uuid4())
@@ -23,4 +26,4 @@ def make_plot():
 
 @app.route("/calculator/<image>")
 def display_plot(image):
-    return render_template("index.html",plot_filename="static/%s.png" % image)
+    return render_template("index.html",plot_filename="../static/%s.png" % image)
