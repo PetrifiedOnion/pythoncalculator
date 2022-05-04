@@ -1,6 +1,7 @@
 mvp.txt
 calvenv
-_pycache_
-Screenshot 2022-04-20 162135.jpg
+__pycache__
 calculator.py
 db.sql
+test.py
+script.txt
